@@ -69,12 +69,19 @@ const limiter = rateLimit({
   message: 'Too many requests , please try again in hour',
 });
 
+app.use(limiter);
+
 // Compression for texts
 app.use(compression());
+// Test middleware
+app.use((req, res, next) => {
+  req.requestedTime = new Date().toISOString();
+
+  next();
+});
 
 // MOUNTING  ROUTERS
-//Limiting the amount of requests
-app.use('/api', limiter);
+
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/categories', categoryRoutes);
