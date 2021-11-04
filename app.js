@@ -2,7 +2,7 @@ const path = require('path');
 
 const express = require('express');
 const morgan = require('morgan');
-//const rateLimit = require('express-rate-limit');
+const rateLimit = require('express-rate-limit');
 
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -63,21 +63,14 @@ app.use(mongoSanitize());
 // Data sanitization against Cross-site-scripting attacks
 app.use(xssClean());
 
-// const limiter = rateLimit({
-//   max: 1000,
-//   windowMs: 60 * 60 * 1000,
-//   message: 'Too many requests , please try again in hour',
-// });
+const limiter = rateLimit({
+  max: 2000,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests , please try again in hour',
+});
 
-// Limiting the amount of requests
-//app.use('/api', limiter);
+app.use(limiter);
 
-// Prevent parameters pollution
-// app.use(
-//   hpp({
-//     whitelist: ['category', 'currentPrice', 'user', 'price', 'sold', 'closed'],
-//   })
-// );
 // Compression for texts
 app.use(compression());
 // Test middleware
