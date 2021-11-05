@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 //Sets our app to use the handlebars engine
 app.set('view engine', 'handlebars');
 //Sets handlebars configurations (we will go through them later on)
-app.engine('handlebars', handlebars());
+app.engine('handlebars', handlebars({ extname: 'hbs' }));
 
 // Set security http headers
 app.use(helmet());
